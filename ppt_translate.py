@@ -1,6 +1,7 @@
 import argparse
 from pptx import Presentation
 from deep_translator import GoogleTranslator
+from tqdm import tqdm
 
 # Function to translate text in a shape
 def translate_shape_text(shape, translator):
@@ -21,7 +22,8 @@ def translate_shape_text(shape, translator):
 def translate_table(table, translator):
     for row in table.rows:
         for cell in row.cells:
-            translate_shape_text(cell, translator)
+            if cell.text_frame:
+                translate_shape_text(cell, translator)
 
 # Function to translate text in SmartArt
 def translate_smartart(smart_art, translator):
@@ -37,15 +39,20 @@ def main(input_file, source_lang, target_lang):
     # Initialize the translator
     translator = GoogleTranslator(source=source_lang, target=target_lang)
 
-    # Iterate through each slide in the original presentation
-    for slide in prs.slides:
-        for shape in slide.shapes:
-            if shape.has_text_frame:
-                translate_shape_text(shape, translator)
-            elif shape.has_table:
-                translate_table(shape.table, translator)
-            elif hasattr(shape, 'has_smart_art') and shape.has_smart_art:
-                translate_smartart(shape.smart_art, translator)
+    # Calculate the total number of shapes to translate
+    total_shapes = sum(len(slide.shapes) for slide in prs.slides)
+
+    # Iterate through each slide in the original presentation with a progress bar
+    with tqdm(total=total_shapes, desc="Translating slides", unit="shape") as pbar:
+        for slide in prs.slides:
+            for shape in slide.shapes:
+                if shape.has_text_frame:
+                    translate_shape_text(shape, translator)
+                elif shape.has_table:
+                    translate_table(shape.table, translator)
+                elif hasattr(shape, 'has_smart_art') and shape.has_smart_art:
+                    translate_smartart(shape.smart_art, translator)
+                pbar.update(1)
 
     # Save the translated presentation
     output_file = input_file.replace('.pptx', '_translated.pptx')
