@@ -9,7 +9,7 @@ sudo apt update
 sudo apt install python3
 sudo apt install python3-pip
 
-pip install deep-translator python-pptx
+pip install deep-translator python-pptx tqdm
 ````
 
 ## Usage
@@ -29,3 +29,11 @@ Additional info is provided with `-h` parameter
 
 ## Output
 When everything works as planned you will receive a new file with a `_translated.pptx` suffix
+
+## Features
+- Transkates the whole document
+- Translates all text without messing up the styling / design of the document
+- displays a progress bar so user can track progress
+
+## Known Issues
+- might have trouble translating text inside Smart Arts
