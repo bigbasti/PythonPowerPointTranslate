@@ -1,5 +1,5 @@
 # Python PowerPoint Translate
-Automatically translates the whole PowerPoint document to another language
+Automatically translates the whole PowerPoint document to another language **without messing up the styling of the presentation**
 
 ## Install
 on linux env use
