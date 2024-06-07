@@ -31,7 +31,7 @@ Additional info is provided with `-h` parameter
 When everything works as planned you will receive a new file with a `_translated.pptx` suffix
 
 ## Features
-- Transkates the whole document
+- Translates the whole document
 - Translates all text without messing up the styling / design of the document
 - displays a progress bar so user can track progress
 
